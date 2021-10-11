@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+
+{% block tituloPagina %} compras {% endblock %}
+
+{% block contenido %}
+            <h1 class="box">Compra de criptos</h1>
+
+            <form action="/purchase">
+                <div class="fecha">
+                    <label for="fecha">Date:</label>
+                    <input type="date" name="fecha" id="fecha">   
+                </div>
+                <div class="campo-formulario">
+                    <label for="from">From:</label>
+                    <select name="from" id="fromOption">
+                        <option>Bitcion (BTC)</option>
+                        <option>Ethereum (ETH)</option>
+                        <option selected>Euro (€)</option>
+                        <option>Bitcoin Cash (BCC / BCH)</option>
+                        <option>Ripple (XRP)</option>
+                        <option>Dollar ($)</option>
+                    </select>
+                    <label for="cantidad">Quantity from:</label>
+                    <input type="text" name="cantidad" id="cantidad" >
+
+                    <label for="to">To:</label>
+                    <select name="to" id="toOption">
+                        <option>Bitcion (BTC)</option>
+                        <option>Ethereum (ETH)</option>
+                        <option>Euro (€)</option>
+                        <option>Bitcoin Cash (BCC / BCH)</option>
+                        <option>Ripple (XRP)</option>
+                        <option selected>Dollar ($)</option>
+                    </select>
+                    <label for="cantidad">Quantity to:</label>
+                    <input type="text" name="cantidad" id="cantidad" > 
+                </div> 
+                <button formaction="/apiCoin" method="POST">Boton</button>
+                <button id="close-image"><img src="static/img/cruz.jpg"></button>
+                <button id="close-image"><img src="static/img/tick.jpg"></button>
+                
+                
+            </form>
+
+{% endblock %}

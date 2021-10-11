@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+
+{% block tituloPagina %} Inicio {% endblock %}
+
+{% block contenido %}
+            <h1 class="box">Movimientos</h1>
+            {% if items | length == 0 %}
+                <p class="primerMov">Introduce tu primer movimiento</p>
+            {% else %}
+                <table class="paper">
+                    <tr>
+                        <!--th >Id </th-->
+                        <th >Fecha</th>
+                        <th >Hora</th>
+                        <th >From</th>
+                        <th >CantFrom</th>
+                        <th >To</th>
+                        <th >CantTo</th>
+                        <th >Pu</th>
+                        <th></th>
+                    </tr>
+                    {% for item in items %}
+                    <tr >
+                        <!--td>{{ item.id }} </td-->
+                        <td>{{ item.fecha }}</td>
+                        <td>{{ item.hora }}</td>
+                        <td>{{ item.from }}</td>
+                        <td>{{ item.cantFrom }}</td>
+                        <td>{{ item.To }}</td>
+                        <td>{{ item.cantTo }} €</td>
+                        <td>{{ item.Pu}} €</td>
+                        <td><a href="/borrar/{{ item.id }}" class="delete">Borrar</a></td>
+                    </tr>
+                    {% endfor %}
+                </table>
+            {% endif %}
+{% endblock %}

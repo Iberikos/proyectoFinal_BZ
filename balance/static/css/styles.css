@@ -1,0 +1,107 @@
+:root {
+    --color-primario: #2B2D42;
+    --color-secundario: #8D99AE;
+    --negro: #223033; 
+    --blanco: #ffffff;
+    --separacion-defecto: 10px;
+}
+
+* {
+    background-color: var(--blanco);
+    color: var(--negro);
+    margin: 0;
+    padding: 0;
+}
+
+footer {
+    margin-top: calc( 4* var(--separacion-defecto));
+}
+
+header *, footer * {
+    background-color: var(--color-primario);
+    color: var(--blanco);
+    font-size: 1.5rem;
+    padding: 2rem;
+    border: 2px solid #EDF2F4;
+}
+
+.primerMov {
+    background-color: #ffffff;
+    color: darkblue;
+    font-weight: 600;
+    text-align: center; 
+    font-family:Georgia, 'Times New Roman', Times, serif
+    
+}
+
+.contenedor {
+    max-width: 1000px;
+    margin: 0 auto;
+}
+
+.box { 
+    font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif; 
+    color: var( --negro); 
+    font-size: 25px; 
+    font-weight: 400; 
+    text-align: center; 
+    background: #FAC6CC; 
+    margin: 0 0 25px; 
+    overflow: hidden; 
+    padding: 20px;
+    border-radius: 35px 0px 35px 0px;
+    -moz-border-radius: 35px 0px 35px 0px;
+    -webkit-border-radius: 35px 0px 35px 0px;
+
+}
+
+button {
+    display: inline-block;
+    height: 134px;
+    padding: 0;
+    margin: 0 auto;
+    vertical-align: top;
+    width: 134px;
+}
+
+
+    #close-image img {
+        display: block;
+        height: 130px;  
+        width: 130px;
+    }
+    
+    #close-CSS {
+        
+        background-size: 100px 130px;
+        height: 134px;  
+        width: 134px;
+    }
+
+table.paper {
+    width: 100%;
+}
+
+.campo-formulario label {
+    display: block;
+    font-weight: bold;
+    font-size: 0.8rem;
+    padding: 0;
+}
+
+.campo-formulario .label {
+    display: inline-block;
+    font-weight: bold;
+    font-size: 1rem;
+    padding: 0;
+}
+
+.campo-formulario input:not([type="radio"]) {
+    width: 100%;
+}
+
+.error {
+    color: darkred;
+    font-weight: bold;
+    font-size: 0.8rem;
+}
