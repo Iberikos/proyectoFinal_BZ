@@ -57,11 +57,11 @@ header *, footer * {
 
 button {
     display: inline-block;
-    height: 100px;
+    height: 75px;
     padding: 0;
     margin: 0 auto;
     vertical-align: top;
-    width: 100px;
+    width: 75px;
 }
 
 

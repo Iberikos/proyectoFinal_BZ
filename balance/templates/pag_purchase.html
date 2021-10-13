@@ -7,11 +7,6 @@
 
             <form action="/purchase">
                 <div class="campo-formulario">
-                <div class="fecha">
-                    <label for="fecha">Date:</label>
-                    <input type="date" name="fecha" id="fecha">   
-                </div>
-                
                     <label for="from">From:</label>
                     <select name="from" id="fromOption">
                         <option>Bitcion (BTC)</option>
@@ -31,12 +26,15 @@
                     </select>
                     <label for="cantidad">Quantity from:</label>
                     <input type="text" name="cantidad" id="cantidad" >
+                    <button class="rounded-button"><img src="static/img/70px.png"></button>
                     <label for="cantidad">Quantity to:</label>
                     <input type="text" name="cantidad" id="cantidad" > 
+                    <label for="preciUnitario">P.U:</label>
+                    <label type="text" name="preciUnitario" id="preciUnitario"></label>
                 </div> 
-                <button formaction="/apiCoin" method="POST">Boton</button>
-                <button id="close-image"><img src="static/img/cruz.jpg">Denegar</button>
-                <button id="close-image"><img src="static/img/tick.jpg">Aceptar</button>
+
+                <button class="rounded-button" id="cruz"><img src="static/img/cruz 70px.png"></button>
+                <button class="rounded-button" id="tick"><img src="static/img/tick 70 casi.png"></button>
                 
                 
             </form>

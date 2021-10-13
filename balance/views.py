@@ -1,7 +1,6 @@
 from . import app
 from flask import render_template, request
 import sqlite3
-from balance.models2 import ListaCompras
 
 
 @app.route("/")
@@ -9,7 +8,7 @@ def index():
     conn = sqlite3.connect("data/Compras.db")
 
     cur = conn.cursor()
-    cur.execute("SELECT * FROM Compras order by fecha;")
+    cur.execute("SELECT * FROM compras order by fecha;")
     
     keys = []
     for item in cur.description:
