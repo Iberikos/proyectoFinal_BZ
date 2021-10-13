@@ -12,9 +12,9 @@
                         <!--th >Id </th-->
                         <th >Fecha</th>
                         <th >Hora</th>
-                        <th >From</th>
+                        <th >coinFrom</th>
                         <th >CantFrom</th>
-                        <th >To</th>
+                        <th >coinTo</th>
                         <th >CantTo</th>
                         <th >Pu</th>
                         <th></th>
@@ -24,14 +24,18 @@
                         <!--td>{{ item.id }} </td-->
                         <td>{{ item.fecha }}</td>
                         <td>{{ item.hora }}</td>
-                        <td>{{ item.from }}</td>
-                        <td>{{ item.cantFrom }}</td>
-                        <td>{{ item.To }}</td>
+                        <td>{{ item.coinFrom }}</td>
+                        <td>{{ item.cantFrom }} €</td>
+                        <td>{{ item.coinTo }}</td>
                         <td>{{ item.cantTo }} €</td>
                         <td>{{ item.Pu}} €</td>
-                        <td><a href="/borrar/{{ item.id }}" class="delete">Borrar</a></td>
                     </tr>
+
+
                     {% endfor %}
                 </table>
+            <button class="Status" formaction="/status" method="POST">Status</button>
+            <button class="plus" formaction="/purchase" method="POST">+</button>    
+
             {% endif %}
 {% endblock %}

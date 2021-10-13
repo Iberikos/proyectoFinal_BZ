@@ -1,9 +1,31 @@
 from . import app
 from flask import render_template, request
+import sqlite3
+from balance.models2 import ListaCompras
+
 
 @app.route("/")
 def index():
-    return render_template('pag_ini.html')
+    conn = sqlite3.connect("data/Compras.db")
+
+    cur = conn.cursor()
+    cur.execute("SELECT * FROM Compras order by fecha;")
+    
+    keys = []
+    for item in cur.description:
+        keys.append(item[0])
+
+    compras = []
+    for registro in cur.fetchall():
+        ix_clave = 0
+        d = {}
+        for columna in keys:
+            d[columna] = registro[ix_clave]
+            ix_clave += 1
+        compras.append(d)
+    
+    return render_template('pag_ini.html', items=compras)
+
 
 @app.route("/purchase")
 def buy():
