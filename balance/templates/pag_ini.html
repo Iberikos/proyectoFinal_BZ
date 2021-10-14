@@ -28,14 +28,14 @@
                         <td>{{ item.cantFrom }} €</td>
                         <td>{{ item.coinTo }}</td>
                         <td>{{ item.cantTo }} €</td>
-                        <td>{{ item.Pu}} €</td>
+                        <td>{{ item.Pu }} €</td>
                     </tr>
 
 
                     {% endfor %}
                 </table>
-            <button class="Status" formaction="/status" method="POST">Status</button>
-            <button class="plus" formaction="/purchase" method="POST">+</button>    
+            <a href="/status"><button method="POST">Status</button></a>
+            <a href="/purchase"><button class="buttonn" method="POST">+</button></a>  
 
             {% endif %}
 {% endblock %}
