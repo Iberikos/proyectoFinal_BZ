@@ -1,3 +1,4 @@
+import sqlite3
 import requests
 
 
@@ -6,6 +7,32 @@ URL = "https://rest.coinapi.io/v1/exchangerate/{}/{}"
 
 class APIError(Exception):
     pass
+
+class DDBBmanager():
+    def __init__(self, RUTA_DDBB):
+        self.RUTA_DDBB = RUTA_DDBB
+
+    def consultaSQL(self, consulta):
+        conn = sqlite3.connect(self.RUTA_DDBB)
+
+        cur = conn.cursor()
+        cur.execute(consulta)
+        
+        keys = []
+        for item in cur.description:
+            keys.append(item[0])
+
+        compras = []
+        for registro in cur.fetchall():
+            ix_clave = 0
+            dic = {}
+            for columna in keys:
+                dic[columna] = registro[ix_clave]
+                ix_clave += 1
+            compras.append(dic)
+
+        conn.close()
+        return compras
 
 class CriptoValueModel():
     def __init__(self,inicio,fin):

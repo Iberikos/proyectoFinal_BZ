@@ -1,36 +1,33 @@
-import flask
 from . import app
 from flask import render_template, request
-import sqlite3
+from balance.models import DDBBmanager
+from balance.forms import MovFormulary
 from balance import models
 
 
+RUTA_DDBB = app.config.get("RUTA_DATABASE")
+based = DDBBmanager(RUTA_DDBB)
+
 @app.route("/")
-def index():
-    conn = sqlite3.connect("data/Compras.db")
-
-    cur = conn.cursor()
-    cur.execute("SELECT * FROM compras order by fecha;")
+def index():        
     
-    keys = []
-    for item in cur.description:
-        keys.append(item[0])
+    compras = based.consultaSQL("SELECT * FROM compras ORDER BY fecha")
 
-    compras = []
-    for registro in cur.fetchall():
-        ix_clave = 0
-        d = {}
-        for columna in keys:
-            d[columna] = registro[ix_clave]
-            ix_clave += 1
-        compras.append(d)
     
     return render_template('pag_ini.html', items=compras)
 
 
-@app.route("/purchase")
+@app.route("/purchase",  methods=['GET', 'POST'])
 def buy():
-    return render_template("pag_purchase.html")
+    formulary = MovFormulary()
+
+
+
+
+
+
+
+    return render_template("pag_purchase.html", formulario = formulary)
 
 @app.route("/status")
 def status():
