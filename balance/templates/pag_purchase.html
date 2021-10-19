@@ -5,52 +5,30 @@
 {% block contenido %}
             <h1 class="box">Compra de criptos</h1>
 
-            <form action="/purchase">
+            <form action="/purchase" method="POST">
+                {{ formulario.hidden_tag() }}
                 <div class="campo-formulario">
                     <label for="from">From:</label>
-                    <select name="from" id="fromOption">
-                        <option selected>Euro (€)</option>
-                        <option>Bitcoin (BTC)</option>
-                        <option>Ethereum (ETH)</option>
-                        <option>Ripple (XRP)</option>
-                        <option>Litecoin (LTC))</option>
-                        <option>Bitcoin Cash (BCH)</option>
-                        <option>Binance (BNB)</option>
-                        <option>Tether (USDT)</option>
-                        <option>EOS (EOS)</option>
-                        <option>Bitcoin SV (BSV)</option>
-                        <option>Stellar Lumens (XLM)</option>
-                        <option>Cardano (ADA)</option>
-                        <option>Tronix (TRX)</option>
-                    </select>
+                    {{ formulario.coinFrom }}
                     <label for="to">To:</label>
-                    <select name="to" id="toOption">
-                        <option>Euro (€)</option>
-                        <option selected>Bitcoin (BTC)</option>
-                        <option>Ethereum (ETH)</option>
-                        <option>Ripple (XRP)</option>
-                        <option>Litecoin (LTC))</option>
-                        <option>Bitcoin Cash (BCH)</option>
-                        <option>Binance (BNB)</option>
-                        <option>Tether (USDT)</option>
-                        <option>EOS (EOS)</option>
-                        <option>Bitcoin SV (BSV)</option>
-                        <option>Stellar Lumens (XLM)</option>
-                        <option>Cardano (ADA)</option>
-                        <option>Tronix (TRX)</option>
-                    </select>
-                    <label for="cantidad">Quantity from:</label>
-                    <input type="text" name="cantidad" id="cantidad" >
-                    <button class="rounded-button" formaction="/apiCoin" method="POST"><img src="static/img/70px.png"></button>
-                    <label for="cantidad">Quantity to:</label>
-                    <label type="text" name="cantidad" id="cantidad" > 
+                    {{ formulario.coinTo }}
+                    {{ formulario.cantFrom.label() }}
+                    {{ formulario.cantFrom(placeholder="Ingrese una cantidad") }}
+                    {% for error in formulario.cantFrom.error %}
+                        <p class="error">{{ error }}</p>
+                    {% endfor %}
+                    {{ formulario.calcular() }}
+                    <label for="cantidad">Quantity to:</label>{{ formulario.cantTo.data }}
+                    {{ formulario.cantToH() }}
+                    <label type="text" name="cantidad" id="cantidad" ></label> 
                     <label for="preciUnitario">P.U:</label>
-                    <label type="text" name="precioUnitario" id="preciUnitario"></label>
+                    <label type="text" name="precioUnitario" id="preciUnitario">{{ formulario.pu.data }}</label>
+                    {{ formulario.puH() }}
+                    {{ formulario.date() }}
+                    {{ formulario.time() }}
                 </div> 
 
-                <button class="rounded-button" id="cruz"><img src="static/img/cruz 70px.png"></button>
-                <button class="rounded-button" id="tick"><img src="static/img/tick 70 casi.png"></button>
-                
+                {{ formulario.aceptar() }}                
                 
             </form>
 

@@ -6,6 +6,6 @@ CREATE TABLE "compras" (
 	"cantFrom"	REAL,
 	"coinTo"	TEXT,
 	"cantTo"	REAL,
-	"Pu"	REAL,
+	"pu"	REAL,
 	PRIMARY KEY("id" AUTOINCREMENT)
 )

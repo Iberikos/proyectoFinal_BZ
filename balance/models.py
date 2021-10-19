@@ -1,12 +1,9 @@
 import sqlite3
 import requests
+from requests.sessions import Session
+import json
+from config import APIKEY, URL
 
-
-APIKEY = "05915253-A982-431B-87AA-55C645B31B41"
-URL = "https://rest.coinapi.io/v1/exchangerate/{}/{}"
-
-class APIError(Exception):
-    pass
 
 class DDBBmanager():
     def __init__(self, RUTA_DDBB):
@@ -34,6 +31,40 @@ class DDBBmanager():
         conn.close()
         return compras
 
+    def consultaSQL2(self, consulta,params):
+        conn = sqlite3.connect(self.RUTA_DDBB)
+
+        cur = conn.cursor()
+        cur.execute(consulta,params)
+        
+        keys = []
+        for item in cur.description:
+            keys.append(item[0])
+
+        compras = []
+        for registro in cur.fetchall():
+            ix_clave = 0
+            dic = {}
+            for columna in keys:
+                dic[columna] = registro[ix_clave]
+                ix_clave += 1
+            compras.append(dic)
+
+        conn.close()
+        return compras
+    
+    def modificaSQL(self, consulta, params):
+        conn = sqlite3.connect(self.RUTA_DDBB)
+
+        cur = conn.cursor()
+
+        cur.execute(consulta, params)
+        conn.commit()
+        conn.close()
+
+class APIError(Exception):
+    pass
+
 class CriptoValueModel():
     def __init__(self,inicio,fin):
         self.de = inicio
@@ -50,26 +81,3 @@ class CriptoValueModel():
             print(respuesta.json())
             raise APIError(f"Se ha producido el error {respuesta.status_code} en la peticion")
     
-
-class ConversorMoneda():
-    diccionario = {
-        'Euro (€)' : 'EUR', 
-        'Bitcoin (BTC)' : "BTC", 
-        'Ethereum (ETH)': 'ETH', 
-        'Ripple (XRP)':'XRP', 
-        'Litecoin (LTC)': 'LTC',
-        'Bitcoin Cash (BCH)':'BCH', 
-        'Binance (BNB)':'BNB', 
-        'Tether (USDT)':'USDT', 
-        'EOS (EOS)':'EOS', 
-        'Bitcoin SV (BSV)':'BSV', 
-        'Stellar Lumens (XLM)':'XLM', 
-        'Cardano (ADA)':'ADA', 
-        'Tronix (TRX)':'TRX', 
-    }
-
-    def __init__(self) -> None:
-        pass
-
-    def convertirStringMoneda(self,de):
-        return self.diccionario[de]

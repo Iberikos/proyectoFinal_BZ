@@ -19,6 +19,11 @@
                     <a href="/status">Status</a>
                 </p>
             </nav>
+            {% with mensajes = get_flashed_messages()%}
+                {% for mensaje in mensajes %}
+                <p class="error">{{ mensaje }}</p>
+                {% endfor %}
+            {% endwith %}
             {% block contenido %}{% endblock %}
         </section>
         <footer>
