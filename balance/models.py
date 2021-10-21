@@ -2,8 +2,7 @@ import sqlite3
 import requests
 from requests.sessions import Session
 import json
-from config import APIKEY, URL
-
+from config import APIKEY, URL, URLTOTAL
 
 class DDBBmanager():
     def __init__(self, RUTA_DDBB):
@@ -31,11 +30,11 @@ class DDBBmanager():
         conn.close()
         return compras
 
-    def consultaSQL2(self, consulta,params):
+    def consultaSQL2(self, consulta, params):
         conn = sqlite3.connect(self.RUTA_DDBB)
 
         cur = conn.cursor()
-        cur.execute(consulta,params)
+        cur.execute(consulta, params)
         
         keys = []
         for item in cur.description:
@@ -81,3 +80,56 @@ class CriptoValueModel():
             print(respuesta.json())
             raise APIError(f"Se ha producido el error {respuesta.status_code} en la peticion")
     
+class StatusModel():
+
+    def __init__(self,based):
+        self.based = based
+        self.spent = 0.0
+        self.currentValue = 0.0
+
+    def calcular(self):
+        consulta = "SELECT SUM(cantFrom) FROM compras WHERE coinFrom='EUR'"
+        sumFrom = self.based.consultaSQL(consulta)
+        consulta = "SELECT SUM(cantTo) FROM compras WHERE coinTo='EUR'"
+        sumTo = self.based.consultaSQL(consulta)
+        if sumFrom[0]['SUM(cantFrom)']==None:
+            sumFrom[0]['SUM(cantFrom)']=0
+        if sumTo[0]['SUM(cantTo)']==None:
+            sumTo[0]['SUM(cantTo)']=0    
+        monedasDisponibles = sumTo[0]['SUM(cantTo)'] - sumFrom[0]['SUM(cantFrom)']
+        self.spent= monedasDisponibles
+
+        totalUSD =0.0
+        diccionarioUSD = self.apiCalculate()
+        # Consulta TOTAL
+            # For
+        coinFrom = {'coinFrom':'BTC'}
+        consulta = "SELECT SUM(cantFrom) FROM compras WHERE coinFrom=:coinFrom"
+        sumFrom = self.based.consultaSQL2(consulta,coinFrom)
+        consulta = "SELECT SUM(cantTo) FROM compras WHERE coinTo=:coinFrom"
+        sumTo = self.based.consultaSQL2(consulta,coinFrom)
+        if sumFrom[0]['SUM(cantFrom)']==None:
+            sumFrom[0]['SUM(cantFrom)']=0
+        if sumTo[0]['SUM(cantTo)']==None:
+            sumTo[0]['SUM(cantTo)']=0    
+        monedasDisponibles = sumTo[0]['SUM(cantTo)'] - sumFrom[0]['SUM(cantFrom)']
+        totalUSD+= monedasDisponibles*diccionarioUSD.setdefault('BTC')
+        # Calculo total
+            # Fin For
+        print("Monedas disponibles"+str(monedasDisponibles))
+        print("TotalUSD"+str(totalUSD))
+
+    def apiCalculate(self):
+        cabecera = {"X-CoinAPI-Key": APIKEY}
+        respuesta = requests.get(URLTOTAL.format("EUR;BTC;ETH;XRP;LTC;BCH;BNB;USDT;EOS;BSV;XLM;ADA;TRX"), headers=cabecera)
+        diccionarioUSD = {}
+        if respuesta.status_code == 200:
+            longitud = len(respuesta.json())
+            for coin in respuesta.json():
+                moneda = coin["asset_id"]
+                price = coin["price_usd"]
+                diccionarioUSD.setdefault(moneda,price)
+            return diccionarioUSD
+        else:
+            print(respuesta.json())
+            raise APIError(f"Se ha producido el error {respuesta.status_code} en la peticion")

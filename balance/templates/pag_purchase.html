@@ -10,19 +10,28 @@
                 <div class="campo-formulario">
                     <label for="from">From:</label>
                     {{ formulario.coinFrom }}
+                    {% for error in formulario.coinFrom.error %}
+                        <p class="error">{{ error }}</p>
+                    {% endfor %}
+
                     <label for="to">To:</label>
                     {{ formulario.coinTo }}
                     {{ formulario.cantFrom.label() }}
                     {{ formulario.cantFrom(placeholder="Ingrese una cantidad") }}
+
                     {% for error in formulario.cantFrom.error %}
                         <p class="error">{{ error }}</p>
                     {% endfor %}
+
                     {{ formulario.calcular() }}
+
                     <label for="cantidad">Quantity to:</label>{{ formulario.cantTo.data }}
                     {{ formulario.cantToH() }}
                     <label type="text" name="cantidad" id="cantidad" ></label> 
+
                     <label for="preciUnitario">P.U:</label>
                     <label type="text" name="precioUnitario" id="preciUnitario">{{ formulario.pu.data }}</label>
+                    
                     {{ formulario.puH() }}
                     {{ formulario.date() }}
                     {{ formulario.time() }}

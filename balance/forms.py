@@ -25,7 +25,7 @@ class MovFormulary(FlaskForm):
         coinTo = SelectField(choices = Coins)
         cantFrom = FloatField("Quantity from: ", validators=[DataRequired(message="Informe una cantidad"),
                                                         NumberRange(message="Informe un número positivo", min=0.01)])
-                                                        # 
+                                                        
         cantTo = FloatField("Quantity to: ")
         pu = FloatField("P.U: ")
         cantToH = HiddenField()

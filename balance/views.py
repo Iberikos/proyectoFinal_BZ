@@ -1,7 +1,7 @@
 from datetime import datetime
 from . import app
 from flask import render_template, request, redirect, url_for, flash
-from balance.models import DDBBmanager, CriptoValueModel
+from balance.models import DDBBmanager, CriptoValueModel, StatusModel
 from balance.forms import MovFormulary
 from balance import models
 
@@ -30,6 +30,7 @@ def buy():
         formulary.cantTo.data=0
         return render_template("pag_purchase.html", formulario = formulary)
     else:
+        
         if formulary.validate():
 
             if formulary.calcular.data:
@@ -37,13 +38,19 @@ def buy():
                 tcoin = request.values.get('coinTo')
                 cripto = CriptoValueModel(fcoin, tcoin)
                 qf = request.values.get('cantFrom')
-                
+                if fcoin==tcoin:
+                    #Error Las monedas son iguales
+                    pass
                 if fcoin != 'EUR':
-
+                    print(formulary.data)
                     consulta = "SELECT SUM(cantFrom) FROM compras WHERE coinFrom=:coinFrom"
                     sumFrom = based.consultaSQL2(consulta,formulary.data)
                     consulta = "SELECT SUM(cantTo) FROM compras WHERE coinTo=:coinFrom"
                     sumTo = based.consultaSQL2(consulta,formulary.data)
+                    if sumFrom[0]['SUM(cantFrom)']==None:
+                        sumFrom[0]['SUM(cantFrom)']=0
+                    if sumTo[0]['SUM(cantTo)']==None:
+                        sumTo[0]['SUM(cantTo)']=0    
                     monedasDisponibles = sumTo[0]['SUM(cantTo)'] - sumFrom[0]['SUM(cantFrom)']
                     if  monedasDisponibles - float(qf) < 0:
                         # Error(No puedes comprar con monedas negativas)
@@ -78,4 +85,10 @@ def status():
     #Consultar BBDD, copiar
     #Devolver pagina con datos
 
-    return render_template("pag_status.html")
+    status = StatusModel(based)
+    status.calcular()
+    status.apiCalculate()
+
+    vectorDevolver = []
+    vectorDevolver.append(status.spent)
+    return render_template("pag_status.html",items=vectorDevolver)
