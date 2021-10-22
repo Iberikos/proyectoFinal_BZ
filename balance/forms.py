@@ -11,7 +11,7 @@ Coins=[('EUR', 'Euro (€)'),
         ('BNB', 'Binance (BNB)'), 
         ('USDT', 'Tether (USDT)'), 
         ('EOS', 'EOS (EOS)'), 
-        ('BSV', 'Bitcoin SV (BSV)'), 
+        ('BCHSV', 'Bitcoin Cash SV (BCHSV)'), 
         ('XLM', 'Stellar Lumens (XLM)'), 
         ('ADA', 'Cardano (ADA)'), 
         ('TRX', 'Tronix (TRX)') 

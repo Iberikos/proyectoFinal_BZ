@@ -3,6 +3,7 @@ import requests
 from requests.sessions import Session
 import json
 from config import APIKEY, URL, URLTOTAL
+from balance.forms import Coins
 
 class DDBBmanager():
     def __init__(self, RUTA_DDBB):
@@ -101,27 +102,31 @@ class StatusModel():
 
         totalUSD =0.0
         diccionarioUSD = self.apiCalculate()
+        print(diccionarioUSD)
         # Consulta TOTAL
-            # For
-        coinFrom = {'coinFrom':'BTC'}
-        consulta = "SELECT SUM(cantFrom) FROM compras WHERE coinFrom=:coinFrom"
-        sumFrom = self.based.consultaSQL2(consulta,coinFrom)
-        consulta = "SELECT SUM(cantTo) FROM compras WHERE coinTo=:coinFrom"
-        sumTo = self.based.consultaSQL2(consulta,coinFrom)
-        if sumFrom[0]['SUM(cantFrom)']==None:
-            sumFrom[0]['SUM(cantFrom)']=0
-        if sumTo[0]['SUM(cantTo)']==None:
-            sumTo[0]['SUM(cantTo)']=0    
-        monedasDisponibles = sumTo[0]['SUM(cantTo)'] - sumFrom[0]['SUM(cantFrom)']
-        totalUSD+= monedasDisponibles*diccionarioUSD.setdefault('BTC')
+        for coinsToCalculate in Coins:
+            coinFrom = {'coinFrom':coinsToCalculate[0]}
+            print(coinFrom)
+            consulta = "SELECT SUM(cantFrom) FROM compras WHERE coinFrom=:coinFrom"
+            sumFrom = self.based.consultaSQL2(consulta,coinFrom)
+            consulta = "SELECT SUM(cantTo) FROM compras WHERE coinTo=:coinFrom"
+            sumTo = self.based.consultaSQL2(consulta,coinFrom)
+            if sumFrom[0]['SUM(cantFrom)']==None:
+                sumFrom[0]['SUM(cantFrom)']=0
+            if sumTo[0]['SUM(cantTo)']==None:
+                sumTo[0]['SUM(cantTo)']=0    
+            monedasDisponibles = sumTo[0]['SUM(cantTo)'] - sumFrom[0]['SUM(cantFrom)']
+            print(diccionarioUSD.setdefault(coinFrom['coinFrom']))
+            totalUSD+= monedasDisponibles*diccionarioUSD.setdefault(coinFrom['coinFrom'])
         # Calculo total
             # Fin For
-        print("Monedas disponibles"+str(monedasDisponibles))
+        # print("Monedas disponibles"+str(monedasDisponibles))
         print("TotalUSD"+str(totalUSD))
+        self.currentValue = totalUSD/diccionarioUSD.setdefault('EUR')
 
     def apiCalculate(self):
         cabecera = {"X-CoinAPI-Key": APIKEY}
-        respuesta = requests.get(URLTOTAL.format("EUR;BTC;ETH;XRP;LTC;BCH;BNB;USDT;EOS;BSV;XLM;ADA;TRX"), headers=cabecera)
+        respuesta = requests.get(URLTOTAL.format("EUR;BTC;ETH;XRP;LTC;BCH;BNB;USDT;EOS;BCHSV;XLM;ADA;TRX"), headers=cabecera)
         diccionarioUSD = {}
         if respuesta.status_code == 200:
             longitud = len(respuesta.json())

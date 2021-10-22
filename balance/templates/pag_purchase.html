@@ -10,7 +10,7 @@
                 <div class="campo-formulario">
                     <label for="from">From:</label>
                     {{ formulario.coinFrom }}
-                    {% for error in formulario.coinFrom.error %}
+                    {% for error in formulario.coinFrom.errors %}
                         <p class="error">{{ error }}</p>
                     {% endfor %}
 
@@ -19,11 +19,11 @@
                     {{ formulario.cantFrom.label() }}
                     {{ formulario.cantFrom(placeholder="Ingrese una cantidad") }}
 
-                    {% for error in formulario.cantFrom.error %}
+                    {% for error in formulario.cantFrom.errors %}
                         <p class="error">{{ error }}</p>
                     {% endfor %}
 
-                    {{ formulario.calcular() }}
+                    <button class="rounded-button"><img src="static/img/70px.png">{{ formulario.calcular() }}</button>
 
                     <label for="cantidad">Quantity to:</label>{{ formulario.cantTo.data }}
                     {{ formulario.cantToH() }}
