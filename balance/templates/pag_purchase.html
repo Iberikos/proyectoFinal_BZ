@@ -23,7 +23,7 @@
                         <p class="error">{{ error }}</p>
                     {% endfor %}
 
-                    <button class="rounded-button"><img src="static/img/70px.png">{{ formulario.calcular() }}</button>
+                    {{ formulario.calcular() }}
 
                     <label for="cantidad">Quantity to:</label>{{ formulario.cantTo.data }}
                     {{ formulario.cantToH() }}

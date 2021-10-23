@@ -78,7 +78,6 @@ class CriptoValueModel():
         if respuesta.status_code == 200:
             self.valor = respuesta.json()["rate"]
         else:
-            print(respuesta.json())
             raise APIError(f"Se ha producido el error {respuesta.status_code} en la peticion")
     
 class StatusModel():
@@ -102,8 +101,8 @@ class StatusModel():
 
         totalUSD =0.0
         diccionarioUSD = self.apiCalculate()
-        print(diccionarioUSD)
-        # Consulta TOTAL
+
+
         for coinsToCalculate in Coins:
             coinFrom = {'coinFrom':coinsToCalculate[0]}
             print(coinFrom)
@@ -116,12 +115,8 @@ class StatusModel():
             if sumTo[0]['SUM(cantTo)']==None:
                 sumTo[0]['SUM(cantTo)']=0    
             monedasDisponibles = sumTo[0]['SUM(cantTo)'] - sumFrom[0]['SUM(cantFrom)']
-            print(diccionarioUSD.setdefault(coinFrom['coinFrom']))
             totalUSD+= monedasDisponibles*diccionarioUSD.setdefault(coinFrom['coinFrom'])
-        # Calculo total
-            # Fin For
-        # print("Monedas disponibles"+str(monedasDisponibles))
-        print("TotalUSD"+str(totalUSD))
+
         self.currentValue = totalUSD/diccionarioUSD.setdefault('EUR')
 
     def apiCalculate(self):
@@ -136,5 +131,4 @@ class StatusModel():
                 diccionarioUSD.setdefault(moneda,price)
             return diccionarioUSD
         else:
-            print(respuesta.json())
             raise APIError(f"Se ha producido el error {respuesta.status_code} en la peticion")

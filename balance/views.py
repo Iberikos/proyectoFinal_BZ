@@ -39,7 +39,7 @@ def buy():
                 cripto = CriptoValueModel(fcoin, tcoin)
                 qf = request.values.get('cantFrom')
                 if fcoin==tcoin:
-                    flash("No se puede hacer un calculo con las mismas monedas")
+                    formulary.cantFrom.errors.append("No se puede hacer un calculo con las mismas monedas")
                     return render_template("pag_purchase.html", formulario=formulary)                
                 if fcoin != 'EUR':
                     print(formulary.data)
@@ -52,10 +52,10 @@ def buy():
                     if sumTo[0]['SUM(cantTo)']==None:
                         sumTo[0]['SUM(cantTo)']=0    
                     monedasDisponibles = sumTo[0]['SUM(cantTo)'] - sumFrom[0]['SUM(cantFrom)']
-                    if  monedasDisponibles - float(qf) < 0:
-                        flash("No dispones de monedas para comprar")
-                        # print ( monedasDisponibles - float(qf))
-                        return render_template("pag_purchase.html", formulario=formulary)                
+                    if  monedasDisponibles - float(qf) <= 0:
+                        formulary.cantFrom.errors.append("No dispones de monedas para comprar, utilice otras de su inventario")
+                        return render_template("pag_purchase.html", formulario=formulary)
+            
 
                 cripto.obtener()
                 formulary.pu.data = cripto.valor
@@ -69,21 +69,16 @@ def buy():
                     INSERT INTO compras (fecha, hora, coinFrom, cantFrom, coinTo, cantTo, pu)
                     VALUES (:date, :time, :coinFrom, :cantFrom, :coinTo, :cantToH, :puH)
                     """
-                    print(formulary.data)
                     based.modificaSQL(consulta, formulary.data)
                 except Exception as e:
-                    # print("Hay un error en la base de datos", e)
                     flash("Hay un error en la base de datos")
                 return redirect(url_for("index"))
         else:
-            # flash("Debe ser un número entero y positivo")
             return render_template("pag_purchase.html", formulario = formulary)
     return render_template("pag_purchase.html", formulario = formulary)
 
 @app.route("/status")
 def status():
-    #Consultar BBDD, copiar
-    #Devolver pagina con datos
 
     status = StatusModel(based)
     status.calcular()
