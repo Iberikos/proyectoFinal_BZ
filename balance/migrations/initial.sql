@@ -8,4 +8,4 @@ CREATE TABLE "compras" (
 	"cantTo"	REAL,
 	"pu"	REAL,
 	PRIMARY KEY("id" AUTOINCREMENT)
-)
+);

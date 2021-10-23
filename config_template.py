@@ -1,0 +1,5 @@
+RUTA_DATABASE="data/Compras.db"
+SECRET_KEY="ClaveSecretaXD"
+APIKEY = "Introduzca su clave de la API"
+URL = "https://rest.coinapi.io/v1/exchangerate/{}/{}"
+URLTOTAL = "https://rest.coinapi.io/v1/assets/{}"
